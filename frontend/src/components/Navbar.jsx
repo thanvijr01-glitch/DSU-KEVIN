@@ -97,6 +97,15 @@ const Navbar = () => {
                 Talent
               </Link>
             </li>
+            <li data-dock-item style={{ display: 'inline-block' }}>
+              <Link 
+                to="/about" 
+                className={isActive('/about') ? 'active' : ''}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+            </li>
             {user ? (
               <>
                 <li data-dock-item style={{ display: 'inline-block' }}>

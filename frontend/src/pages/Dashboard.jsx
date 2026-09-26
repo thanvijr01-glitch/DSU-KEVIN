@@ -80,11 +80,10 @@ const Dashboard = () => {
   const handleConnectGithub = () => {
     // Redirect to GitHub OAuth
     const clientId = 'Ov23liHHStcpxMzLBJtp';
-    // Using current origin allows it to work dynamically whether on localhost:3000 or localhost:5173
-    const redirectUri = `${window.location.origin}/dashboard`;
+    // Let GitHub use the exact callback URL configured in Developer Settings to avoid mismatch errors
     // prompt=consent forces GitHub to show account selector
-    // scope=read:user ensures we only ask for public profile info (public repos are readable by default)
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user&prompt=consent`;
+    // scope=read:user ensures we only ask for public profile info
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=read:user&prompt=consent`;
   };
 
   const handleDisconnect = async () => {
@@ -263,7 +262,7 @@ const Dashboard = () => {
                   {isSyncing ? 'Authenticating...' : 'Connect with GitHub'}
                 </button>
                 <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '0.5rem' }}>
-                  *Note: It will automatically connect whichever GitHub account is currently logged into this browser. Use an Incognito window to test a different account.
+                  *Note: It will securely verify the GitHub account currently active in your browser.
                 </p>
                 {syncError && <p style={{ color: '#991B1B', marginTop: '1rem', fontSize: '14px' }}>{syncError}</p>}
               </div>

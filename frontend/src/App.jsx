@@ -11,6 +11,7 @@ import PublicProfile from './pages/PublicProfile';
 import Teams from './pages/Teams';
 import TeamDetails from './pages/TeamDetails';
 import Hackathons from './pages/Hackathons';
+import About from './pages/About';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:id" element={<TeamDetails />} />
           <Route path="/hackathons" element={<Hackathons />} />
+          <Route path="/about" element={<About />} />
           <Route path="/auth/github/callback" element={<GithubCallback />} />
         </Routes>
       </Router>

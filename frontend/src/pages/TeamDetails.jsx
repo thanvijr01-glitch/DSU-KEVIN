@@ -157,13 +157,32 @@ function CandidateCard({ candidate, rank, onInvite }) {
         </div>
       )}
 
-      {/* Expanded reasons */}
       {expanded && (
         <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '0.75rem', marginTop: '0.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
           <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: '#374151' }}>Why KEVIN matched this candidate:</p>
           {(candidate.reasons || [candidate.whyMatched]).map((r, i) => (
             <p key={i} style={{ margin: 0, fontSize: 13, color: '#6b7280', lineHeight: 1.5 }}>• {r}</p>
           ))}
+          
+          {candidate.githubRepositories && candidate.githubRepositories.length > 0 && (
+            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px dashed #e5e7eb' }}>
+              <p style={{ margin: '0 0 0.5rem 0', fontWeight: 600, fontSize: 13, color: '#374151' }}>Public GitHub Repositories:</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                {candidate.githubRepositories.slice(0, 4).map((repo, idx) => (
+                  <a key={idx} href={repo.url} target="_blank" rel="noreferrer" style={{ fontSize: 12, padding: '0.5rem', border: '1px solid #e5e7eb', borderRadius: '4px', textDecoration: 'none', color: '#1f2937', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--accent-orange, #f97316)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{repo.repository}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#6b7280' }}>
+                      <span>{repo.language || 'Mixed'}</span>
+                      <span>⭐ {repo.stars || 0}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              {candidate.githubRepositories.length > 4 && (
+                 <p style={{ fontSize: 11, color: '#6b7280', margin: '0.25rem 0 0 0', textAlign: 'right' }}>+{candidate.githubRepositories.length - 4} more</p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

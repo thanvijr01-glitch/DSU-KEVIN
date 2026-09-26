@@ -312,6 +312,8 @@ async function analyzeProjectAndMatch(req, res) {
           whyMatched,
 
           reasons,
+
+          githubRepositories: repos,
         };
       });
 
