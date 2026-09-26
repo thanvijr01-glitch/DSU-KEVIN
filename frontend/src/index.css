@@ -307,3 +307,84 @@ ul {
     transform: none !important;
   }
 }
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem !important;
+  }
+  
+  /* Target React's rendered inline styles */
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))"],
+  [style*="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="flex-direction: row"],
+  [style*="display: flex"] {
+    /* Notice: doing this globally for all flex containers might break some layouts like navbar */
+  }
+  
+  /* Safe class-based wrappers where flex direction should flip to column */
+  .hero-container,
+  .vis-header,
+  .hero-stats-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Specific fixes for dashboard/hackathon cards inline flex styles */
+  .dashboard-card > div[style*="display: flex"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  
+  .dashboard-card > div[style*="justify-content: space-between"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  /* Keep action row with avatar and stats horizontal */
+  .node-name, .vis-header {
+    flex-direction: row !important;
+  }
+  
+  /* Modals/forms */
+  form,
+  .modal-content {
+    width: 100% !important;
+  }
+  
+  h2.serif {
+    font-size: 32px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h2.serif {
+    font-size: 28px !important;
+  }
+
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Generic mobile adjustments */
+  [style*="gap: 4rem"] {
+    gap: 2rem !important;
+  }
+  
+  [style*="padding: 4rem 2rem"],
+  [style*="padding: 4rem"] {
+    padding: 2rem 1rem !important;
+  }
+}
