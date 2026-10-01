@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 html {
@@ -9,16 +10,19 @@ html {
   --bg-white: #FFFFFF;
   --text-black: #17181b;
   --text-gray: #71706B;
+
   --accent-orange: #E6532D;
   --accent-orange-hover: #D0421C;
   --accent-orange-light: rgba(230, 83, 45, 0.08);
   --accent-orange-glow: rgba(230, 83, 45, 0.25);
+
   --border-light: #E4E1DA;
   --border-medium: #D3CFCE;
+
   --font-serif: 'Cormorant Garamond', serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'Space Mono', monospace;
-  
+
   --shadow-sm: 0 2px 8px rgba(23, 24, 27, 0.04);
   --shadow-md: 0 8px 24px rgba(23, 24, 27, 0.06);
   --shadow-lg: 0 16px 36px rgba(23, 24, 27, 0.1);
@@ -26,13 +30,18 @@ html {
   --shadow-sharp-orange: 8px 8px 0px rgba(230, 83, 45, 0.2);
 }
 
+/* ================================
+   RESET
+================================ */
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   background-color: var(--bg-ivory);
   color: var(--text-black);
   font-family: var(--font-sans);
@@ -43,7 +52,12 @@ html, body {
   overflow-y: scroll;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-serif);
   font-weight: 500;
   line-height: 1.1;
@@ -67,7 +81,10 @@ ul {
   list-style: none;
 }
 
-/* Scrollbar Customization */
+/* ================================
+   SCROLLBAR
+================================ */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -85,7 +102,10 @@ ul {
   background: var(--accent-orange);
 }
 
-/* Modern Utilities */
+/* ================================
+   UTILITIES
+================================ */
+
 .container {
   max-width: 1320px;
   margin: 0 auto;
@@ -136,10 +156,18 @@ ul {
   justify-content: center;
 }
 
-/* Animations & Micro-Interactions */
+/* ================================
+   ANIMATIONS
+================================ */
+
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -147,6 +175,7 @@ ul {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -158,9 +187,11 @@ ul {
     opacity: 0;
     transform: scale(0.92);
   }
+
   70% {
     transform: scale(1.02);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -168,18 +199,22 @@ ul {
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(230, 83, 45, 0.4);
   }
+
   50% {
     box-shadow: 0 0 0 10px rgba(230, 83, 45, 0);
   }
 }
 
 @keyframes floatNode {
-  0%, 100% {
-    transform: translateY(0px);
+  0%,
+  100% {
+    transform: translateY(0);
   }
+
   50% {
     transform: translateY(-8px);
   }
@@ -192,19 +227,31 @@ ul {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Scroll Reveal Classes */
+/* ================================
+   SCROLL REVEAL
+================================ */
+
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
@@ -213,21 +260,46 @@ ul {
   transform: translateY(0);
 }
 
-.stagger-1 { transition-delay: 0.1s; }
-.stagger-2 { transition-delay: 0.2s; }
-.stagger-3 { transition-delay: 0.3s; }
-.stagger-4 { transition-delay: 0.4s; }
-
-/* Interactive Cards & Buttons */
-.interactive-card, .dashboard-card {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease !important;
+.stagger-1 {
+  transition-delay: 0.1s;
 }
 
-.interactive-card:hover, .dashboard-card:hover {
+.stagger-2 {
+  transition-delay: 0.2s;
+}
+
+.stagger-3 {
+  transition-delay: 0.3s;
+}
+
+.stagger-4 {
+  transition-delay: 0.4s;
+}
+
+/* ================================
+   CARDS
+================================ */
+
+.interactive-card,
+.dashboard-card {
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease !important;
+}
+
+.interactive-card:hover,
+.dashboard-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(23, 24, 27, 0.08), 0 0 0 1px var(--accent-orange-light) !important;
+  box-shadow:
+    0 12px 28px rgba(23, 24, 27, 0.08),
+    0 0 0 1px var(--accent-orange-light) !important;
   border-color: var(--accent-orange) !important;
 }
+
+/* ================================
+   BUTTONS
+================================ */
 
 .cta-button {
   background-color: var(--accent-orange);
@@ -237,6 +309,7 @@ ul {
   font-size: 14px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   border-radius: 2px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -253,6 +326,10 @@ ul {
 .cta-button:active {
   transform: translateY(0) scale(0.98);
 }
+
+/* ================================
+   SKILL CHIPS
+================================ */
 
 .skill-chip {
   background: rgba(230, 83, 45, 0.08);
@@ -273,6 +350,10 @@ ul {
   transform: translateY(-1px);
 }
 
+/* ================================
+   GLASS PANEL
+================================ */
+
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
@@ -280,7 +361,10 @@ ul {
   border: 1px solid var(--border-light);
 }
 
-/* Modal animation */
+/* ================================
+   MODALS
+================================ */
+
 .modal-backdrop {
   animation: fadeIn 0.25s ease-out;
 }
@@ -289,50 +373,80 @@ ul {
   animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  .reveal-on-scroll {
-    opacity: 1 !important;
-    transform: none !important;
-  }
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
 }
 
-/* Responsive Overrides */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-stats {
+  display: flex;
+  gap: 2rem;
+  background: white;
+  padding: 1.25rem 2rem;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+/* Tablets */
 @media (max-width: 1024px) {
   .container {
     padding: 0 1.5rem !important;
   }
+
+  .dashboard-grid {
+    gap: 2rem;
+  }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem !important;
   }
-  
-  /* Target React's rendered inline styles */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .dashboard-stats {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Target React inline grid styles */
   [style*="grid-template-columns: 1fr 1fr"],
   [style*="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))"],
   [style*="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))"] {
     grid-template-columns: 1fr !important;
   }
 
-  [style*="flex-direction: row"],
-  [style*="display: flex"] {
-    /* Notice: doing this globally for all flex containers might break some layouts like navbar */
-  }
-  
-  /* Safe class-based wrappers where flex direction should flip to column */
+  /* Safe class-based responsive containers */
   .hero-container,
   .vis-header,
   .hero-stats-row {
@@ -340,34 +454,37 @@ ul {
     align-items: flex-start !important;
   }
 
-  /* Specific fixes for dashboard/hackathon cards inline flex styles */
+  /* Dashboard / hackathon card headers */
   .dashboard-card > div[style*="display: flex"] {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 1rem !important;
   }
-  
+
   .dashboard-card > div[style*="justify-content: space-between"] {
     flex-direction: column !important;
     align-items: flex-start !important;
   }
-  
-  /* Keep action row with avatar and stats horizontal */
-  .node-name, .vis-header {
+
+  /* Keep node name / visual header horizontal */
+  .node-name,
+  .vis-header {
     flex-direction: row !important;
   }
-  
-  /* Modals/forms */
+
+  /* Forms and modals */
   form,
   .modal-content {
     width: 100% !important;
+    max-width: 100%;
   }
-  
+
   h2.serif {
     font-size: 32px !important;
   }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
   h2.serif {
     font-size: 28px !important;
@@ -377,14 +494,42 @@ ul {
     width: 100%;
     justify-content: center;
   }
-  
-  /* Generic mobile adjustments */
+
   [style*="gap: 4rem"] {
     gap: 2rem !important;
   }
-  
+
   [style*="padding: 4rem 2rem"],
   [style*="padding: 4rem"] {
     padding: 2rem 1rem !important;
+  }
+
+  .dashboard-stats {
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* ================================
+   REDUCED MOTION
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

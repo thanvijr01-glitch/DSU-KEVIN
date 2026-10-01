@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ChatbotWidget from '../components/ChatbotWidget';
 import api from '../services/api';
 
 const Dashboard = () => {
@@ -18,6 +19,8 @@ const Dashboard = () => {
   const [isDisconnecting, setIsDisconnecting] = useState(false);
   const [showConfirmDisconnect, setShowConfirmDisconnect] = useState(false);
   const [disconnectError, setDisconnectError] = useState('');
+  
+  const [userStats, setUserStats] = useState({ streakCount: 0, creditScore: 0, teamsJoined: 0 });
   
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileData, setProfileData] = useState({
@@ -71,6 +74,16 @@ const Dashboard = () => {
             setIsSyncing(false);
           });
       }
+
+      // Record activity & update streak/credits
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      api.post('/users/activity', { timezone: tz })
+        .then(res => {
+          if (res.data.success) {
+            setUserStats(res.data.data);
+          }
+        })
+        .catch(err => console.error("Failed to update activity:", err));
     }
   }, [user]);
 
@@ -79,7 +92,7 @@ const Dashboard = () => {
 
   const handleConnectGithub = () => {
     // Redirect to GitHub OAuth
-    const clientId = 'Ov23liHHStcpxMzLBJtp';
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID || 'Ov23liHHStcpxMzLBJtp';
     // Let GitHub use the exact callback URL configured in Developer Settings to avoid mismatch errors
     // prompt=consent forces GitHub to show account selector
     // scope=read:user ensures we only ask for public profile info
@@ -143,16 +156,30 @@ const Dashboard = () => {
       <Navbar />
       
       <div className="container" style={{ flex: 1, padding: '4rem 2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <h2 className="serif text-black" style={{ fontSize: '48px', margin: 0 }}>
-            Welcome, {user.name}
-          </h2>
-          <button onClick={() => setIsEditingProfile(true)} className="cta-button" style={{ background: '#F3F4F6', color: '#111827' }}>
-            Edit Profile
-          </button>
+        <div className="dashboard-header">
+          <div>
+            <h2 className="serif text-black" style={{ fontSize: '48px', margin: '0 0 0.5rem 0' }}>
+              Welcome, {user.name}
+            </h2>
+            <button onClick={() => setIsEditingProfile(true)} className="cta-button" style={{ background: '#F3F4F6', color: '#111827', marginTop: '1rem' }}>
+              Edit Profile
+            </button>
+          </div>
+          
+          <div className="dashboard-stats">
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#F97316', lineHeight: 1 }}>{userStats.streakCount} 🔥</div>
+              <div style={{ fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '0.5rem', fontWeight: 600 }}>Day Streak</div>
+            </div>
+            <div style={{ width: '1px', background: '#E5E7EB' }}></div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#10B981', lineHeight: 1 }}>{userStats.creditScore} 💎</div>
+              <div style={{ fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '0.5rem', fontWeight: 600 }}>Credit Score</div>
+            </div>
+          </div>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+        <div className="dashboard-grid">
           
           <div className="dashboard-card" style={{ border: '1px solid var(--border-light)', padding: '2rem', background: 'var(--bg-white)', gridColumn: '1 / -1' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -332,6 +359,7 @@ const Dashboard = () => {
       </div>
 
       {isEditingProfile && (
+        // ... (Editing Profile Modal)
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
           <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '500px' }}>
             <h2 className="serif text-black" style={{ marginBottom: '1.5rem', fontSize: '24px' }}>Edit Profile</h2>
@@ -369,6 +397,7 @@ const Dashboard = () => {
         </div>
       )}
 
+      <ChatbotWidget />
       <Footer />
     </div>
   );

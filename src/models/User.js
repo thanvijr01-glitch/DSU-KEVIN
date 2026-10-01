@@ -277,6 +277,32 @@ const userSchema = new mongoose.Schema(
     isCollegeVerified: {
       type: Boolean,
       default: false
+    },
+
+    // --- Timezone Streaks & Credit Scores ---
+    timezone: {
+      type: String,
+      default: "Asia/Kolkata"
+    },
+
+    streakCount: {
+      type: Number,
+      default: 0
+    },
+
+    lastActiveDate: {
+      type: Date,
+      default: null
+    },
+
+    creditScore: {
+      type: Number,
+      default: 0
+    },
+
+    teamsJoined: {
+      type: Number,
+      default: 0
     }
   },
   {

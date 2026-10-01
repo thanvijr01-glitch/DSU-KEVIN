@@ -118,12 +118,16 @@ const teamSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["forming", "complete", "closed"],
+      enum: ["forming", "complete", "closed", "showcase"],
       default: "forming"
     },
     hackathon: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hackathon"
+    },
+    projectLink: {
+      type: String,
+      default: ""
     }
   },
   {

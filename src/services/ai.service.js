@@ -310,8 +310,51 @@ function verifySkillsFallback({
   };
 }
 
+async function chatWithPlatformAI(userMessage, chatHistory = []) {
+  const systemPrompt = `
+You are the official AI Assistant for KEVIN (Knowledge Evaluation and Verification Interactive Network), a hackathon team-building platform.
+Your ONLY purpose is to answer questions about the KEVIN platform, its features (AI Matcher, GitHub synchronization, Skill Verification, Team building, Hackathon directory), and how to use it.
+If the user asks anything unrelated to KEVIN, hackathons, team building, or the platform features, you MUST politely refuse to answer and redirect them to asking about KEVIN.
+Do not provide general coding help unless it's specifically about integrating with KEVIN's features.
+Keep your answers concise, friendly, and helpful.
+`;
+
+  // Filter out the initial greeting to avoid 'model' -> 'model' conflict
+  // and exclude the very last user message from history because we append it manually.
+  const previousHistory = chatHistory.filter((msg, idx) => 
+    idx !== 0 && idx !== chatHistory.length - 1
+  );
+
+  const formattedHistory = previousHistory.map(msg => ({
+    role: msg.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: msg.content }]
+  }));
+
+  for (const model of GEMINI_MODELS) {
+    try {
+      const response = await ai.models.generateContent({
+        model,
+        contents: [
+          { role: 'user', parts: [{ text: systemPrompt }] },
+          { role: 'model', parts: [{ text: 'Understood. I will strictly act as the KEVIN platform assistant. Hi there! I am your KEVIN assistant. Ask me anything about the platform, AI Matcher, or GitHub integrations!' }] },
+          ...formattedHistory,
+          { role: 'user', parts: [{ text: userMessage }] }
+        ]
+      });
+
+      return response.text;
+    } catch (error) {
+      if (error.status === 404) continue;
+      continue; // Try next model
+    }
+  }
+
+  return "I'm currently experiencing high traffic. Please try asking your question again in a moment!";
+}
+
 module.exports = {
   analyzeProject,
   verifySkillsFromContributions,
-  verifySkillsFallback
+  verifySkillsFallback,
+  chatWithPlatformAI
 };

@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api from '../services/api';
+import TeamChat from '../components/TeamChat';
 
 // ─── Score ring helpers ───────────────────────────────────────────────────────
 function ScoreRing({ score, size = 56, stroke = 5 }) {
@@ -277,6 +278,24 @@ const TeamDetails = () => {
     }
   };
 
+  const handlePublishShowcase = async () => {
+    const link = prompt('Enter your project URL (GitHub or Live Site) to publish to the Showcase:', team.projectLink || '');
+    if (link === null) return;
+    
+    try {
+      const response = await api.put(`/teams/${id}`, {
+        status: 'showcase',
+        projectLink: link
+      });
+      if (response.data.success) {
+        setTeam(response.data.data);
+        alert('Successfully published to Project Showcase! 🚀');
+      }
+    } catch (err) {
+      alert(err.response?.data?.error?.message || 'Failed to publish to showcase');
+    }
+  };
+
   // ── Recommendation trigger ─────────────────────────────────────────────────
   const handleFindTeammates = async () => {
     const descToUse = (descOverride || team?.description || '').trim();
@@ -363,9 +382,17 @@ const TeamDetails = () => {
               <p className="text-gray" style={{ fontSize: '18px', margin: 0 }}>{team.theme || 'No theme specified'}</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <span style={{ fontSize: '12px', textTransform: 'uppercase', background: team.status === 'forming' ? '#D1FAE5' : '#FEF3C7', color: team.status === 'forming' ? '#065F46' : '#92400E', padding: '0.4rem 1rem', borderRadius: '4px', fontWeight: 'bold' }}>
+              <span style={{ fontSize: '12px', textTransform: 'uppercase', background: team.status === 'forming' ? '#D1FAE5' : (team.status === 'showcase' ? '#FCE7F3' : '#FEF3C7'), color: team.status === 'forming' ? '#065F46' : (team.status === 'showcase' ? '#9D174D' : '#92400E'), padding: '0.4rem 1rem', borderRadius: '4px', fontWeight: 'bold' }}>
                 {team.status}
               </span>
+              {isOwner && team.status !== 'showcase' && (
+                <button 
+                  onClick={handlePublishShowcase}
+                  style={{ padding: '0.4rem 1rem', fontSize: '12px', background: '#FCE7F3', color: '#9D174D', border: '1px solid #FBCFE8', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase' }}
+                >
+                  Publish to Showcase 🏆
+                </button>
+              )}
               {isOwner && !showConfirmDelete && (
                 <button 
                   onClick={() => setShowConfirmDelete(true)}
@@ -401,6 +428,13 @@ const TeamDetails = () => {
             <p className="text-gray" style={{ fontSize: '16px', lineHeight: '1.6' }}>
               {team.description || 'No description provided.'}
             </p>
+            {team.projectLink && (
+              <div style={{ marginTop: '1rem' }}>
+                <a href={team.projectLink} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#111827', color: 'white', padding: '0.5rem 1rem', borderRadius: '6px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}>
+                  🚀 View Project
+                </a>
+              </div>
+            )}
           </div>
 
           <div style={{ marginBottom: '3rem' }}>
@@ -470,6 +504,11 @@ const TeamDetails = () => {
               ))}
             </div>
           </div>
+
+          {/* Real-time chat widget */}
+          {team.status !== 'forming' || team.members?.some(m => m.user._id === user._id) ? (
+            <TeamChat teamId={id} />
+          ) : null}
         </div>
 
         {/* ══════════════════════════════════════════════════════════════════ */}

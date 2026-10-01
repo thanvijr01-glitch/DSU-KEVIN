@@ -3,7 +3,9 @@ const express = require("express");
 const {
   getUserById,
   updateUser,
-  getAllUsers
+  getAllUsers,
+  updateActivity,
+  getLeaderboard
 } = require("../controllers/user.controller");
 
 const {
@@ -16,6 +18,8 @@ const router = express.Router();
  * All profile operations require authentication.
  */
 router.get("/", protect, getAllUsers);
+router.get("/leaderboard", protect, getLeaderboard);
+router.post("/activity", protect, updateActivity);
 router.get("/:id", protect, getUserById);
 
 router.put("/:id", protect, updateUser);

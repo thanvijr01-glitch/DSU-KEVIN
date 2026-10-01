@@ -42,6 +42,11 @@ const createTeam = async (req, res, next) => {
       status: "forming"
     });
 
+    // Reward for creating a team
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { creditScore: 20, teamsJoined: 1 }
+    });
+
     await team.populate([
       {
         path: "owner",
@@ -138,7 +143,8 @@ const updateTeam = async (req, res, next) => {
       "description",
       "theme",
       "status",
-      "maxMembers"
+      "maxMembers",
+      "projectLink"
     ];
 
     const invalidFields = Object.keys(req.body).filter(
@@ -188,7 +194,8 @@ const updateTeam = async (req, res, next) => {
       const allowedStatuses = [
         "forming",
         "complete",
-        "closed"
+        "closed",
+        "showcase"
       ];
 
       if (!allowedStatuses.includes(req.body.status)) {
@@ -213,6 +220,10 @@ const updateTeam = async (req, res, next) => {
         });
       }
       team.maxMembers = maxMembers;
+    }
+
+    if (req.body.projectLink !== undefined) {
+      team.projectLink = req.body.projectLink.trim();
     }
 
     await team.save();
@@ -443,7 +454,11 @@ const removeMember = async (req, res, next) => {
 
 const getAllTeams = async (req, res, next) => {
   try {
-    const teams = await Team.find()
+    const { status } = req.query;
+    let query = {};
+    if (status) query.status = status;
+
+    const teams = await Team.find(query)
       .populate("owner", "name email college")
       .populate("members.user", "name skills github")
       .sort({ createdAt: -1 });
@@ -615,6 +630,10 @@ const respondToInvite = async (req, res, next) => {
 
     if (action === "accept") {
       team.members[memberIndex].status = "accepted";
+      // Reward for joining a team
+      await User.findByIdAndUpdate(req.user._id, {
+        $inc: { creditScore: 10, teamsJoined: 1 }
+      });
     } else if (action === "decline") {
       team.members.splice(memberIndex, 1);
     }

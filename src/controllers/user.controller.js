@@ -228,7 +228,7 @@ const getAllUsers = async (req, res, next) => {
     }
 
     const users = await User.find(query)
-      .select("name college studentId bio skills github.username createdAt")
+      .select("name college studentId bio skills github.username createdAt creditScore streakCount")
       .sort({ createdAt: -1 });
 
     return res.status(200).json({
@@ -243,8 +243,82 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const updateActivity = async (req, res, next) => {
+  try {
+    const { timezone } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, error: { message: "User not found" } });
+    }
+
+    if (timezone) {
+      user.timezone = timezone;
+    }
+
+    const now = new Date();
+    
+    if (!user.lastActiveDate) {
+      user.streakCount = 1;
+      user.lastActiveDate = now;
+    } else {
+      // Calculate date difference using timezone
+      const formatter = new Intl.DateTimeFormat('en-US', { timeZone: user.timezone, year: 'numeric', month: 'numeric', day: 'numeric' });
+      const lastActiveStr = formatter.format(user.lastActiveDate);
+      const nowStr = formatter.format(now);
+      
+      const lastActiveLocal = new Date(lastActiveStr);
+      const nowLocal = new Date(nowStr);
+      
+      const diffTime = Math.abs(nowLocal - lastActiveLocal);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 1) {
+        user.streakCount += 1;
+        user.lastActiveDate = now;
+      } else if (diffDays > 1) {
+        user.streakCount = 1;
+        user.lastActiveDate = now;
+      }
+    }
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        streakCount: user.streakCount,
+        creditScore: user.creditScore,
+        teamsJoined: user.teamsJoined
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getLeaderboard = async (req, res, next) => {
+  try {
+    const topUsers = await User.find({ creditScore: { $gt: 0 } })
+      .select("name college creditScore streakCount github.username")
+      .sort({ creditScore: -1, streakCount: -1 })
+      .limit(50);
+
+    return res.status(200).json({
+      success: true,
+      data: topUsers
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getUserById,
   updateUser,
-  getAllUsers
+  getAllUsers,
+  updateActivity,
+  getLeaderboard
 };

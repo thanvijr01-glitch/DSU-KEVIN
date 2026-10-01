@@ -1,4 +1,6 @@
 const express = require("express");
+const http = require("http");
+const { initSocket } = require("./socket");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -12,6 +14,7 @@ const teamRoutes = require("./routes/team.routes");
 const matchingRoutes = require("./routes/matching.routes");
 const githubRoutes = require("./routes/github.routes");
 const hackathonRoutes = require("./routes/hackathon.routes");
+const aiRoutes = require("./routes/ai.routes");
 
 const {
   notFound,
@@ -88,6 +91,8 @@ app.use("/api/github", githubRoutes);
 
 app.use("/api/hackathons", hackathonRoutes);
 
+app.use("/api/ai", aiRoutes);
+
 /*
  * 404 handler
  */
@@ -106,9 +111,12 @@ if (require.main === module) {
     try {
       await connectDB();
 
-      app.listen(env.port, () => {
+      const server = http.createServer(app);
+      initSocket(server);
+
+      server.listen(env.port, () => {
         console.log(
-          `KEVIN API running on http://localhost:${env.port}`
+          `KEVIN API & WebSocket running on http://localhost:${env.port}`
         );
       });
     } catch (error) {

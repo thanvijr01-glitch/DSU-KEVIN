@@ -99,6 +99,24 @@ const Navbar = () => {
             </li>
             <li data-dock-item style={{ display: 'inline-block' }}>
               <Link 
+                to="/leaderboard" 
+                className={isActive('/leaderboard') ? 'active' : ''}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Leaderboard
+              </Link>
+            </li>
+            <li data-dock-item style={{ display: 'inline-block' }}>
+              <Link 
+                to="/showcase" 
+                className={isActive('/showcase') ? 'active' : ''}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Showcase
+              </Link>
+            </li>
+            <li data-dock-item style={{ display: 'inline-block' }}>
+              <Link 
                 to="/about" 
                 className={isActive('/about') ? 'active' : ''}
                 onClick={() => setMobileMenuOpen(false)}
