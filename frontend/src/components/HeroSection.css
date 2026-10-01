@@ -384,3 +384,13 @@
     font-size: 46px;
   }
 }
+
+@media (max-width: 480px) {
+  .vis-body {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+  .visualization-container {
+    height: 520px;
+  }
+}
