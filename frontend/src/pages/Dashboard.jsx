@@ -92,7 +92,7 @@ const Dashboard = () => {
 
   const handleConnectGithub = () => {
     // Redirect to GitHub OAuth
-    const clientId = 'Ov23liHHStcpxMzLBJtp';
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID || 'Ov23liHHStcpxMzLBJtp';
     // Let GitHub use the exact callback URL configured in Developer Settings to avoid mismatch errors
     // prompt=consent forces GitHub to show account selector
     // scope=read:user ensures we only ask for public profile info
@@ -156,7 +156,7 @@ const Dashboard = () => {
       <Navbar />
       
       <div className="container" style={{ flex: 1, padding: '4rem 2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '3rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div className="dashboard-header">
           <div>
             <h2 className="serif text-black" style={{ fontSize: '48px', margin: '0 0 0.5rem 0' }}>
               Welcome, {user.name}
@@ -166,7 +166,7 @@ const Dashboard = () => {
             </button>
           </div>
           
-          <div style={{ display: 'flex', gap: '2rem', background: 'white', padding: '1.25rem 2rem', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+          <div className="dashboard-stats">
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#F97316', lineHeight: 1 }}>{userStats.streakCount} 🔥</div>
               <div style={{ fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '0.5rem', fontWeight: 600 }}>Day Streak</div>
@@ -179,7 +179,7 @@ const Dashboard = () => {
           </div>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+        <div className="dashboard-grid">
           
           <div className="dashboard-card" style={{ border: '1px solid var(--border-light)', padding: '2rem', background: 'var(--bg-white)', gridColumn: '1 / -1' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
